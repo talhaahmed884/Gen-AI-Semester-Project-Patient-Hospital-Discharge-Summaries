@@ -84,6 +84,7 @@ The project uses the preprocessed MIMIC-IV BHC clinical discharge summaries data
 
 - [Bryan Bergo](https://github.com/blbergo)
 - [Mike Leon](https://github.com/mikeleon001)
+- [Nicolas Escobedo](https://github.com/Nico25041)
 - [Trung Nguyen](https://github.com/TrungVN9)
 - [Talha Ahmed](https://github.com/talhaahmed884)
 
