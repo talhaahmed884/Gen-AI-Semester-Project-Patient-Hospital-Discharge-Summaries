@@ -1,0 +1,32 @@
+{
+  "model": "google/medgemma-4b-it",
+  "adapter_path": "./medgemma-discharge-summarization/final",
+  "num_test_samples": 100,
+  "bertscore": {
+    "precision": {
+      "mean": 0.6666905283927917,
+      "std": 0.057967409491539,
+      "min": 0.5362078547477722,
+      "max": 0.8801409006118774
+    },
+    "recall": {
+      "mean": 0.6523036360740662,
+      "std": 0.06371836364269257,
+      "min": 0.48869746923446655,
+      "max": 0.8666306734085083
+    },
+    "f1": {
+      "mean": 0.6579827070236206,
+      "std": 0.052987948060035706,
+      "min": 0.517662525177002,
+      "max": 0.8381444215774536
+    }
+  },
+  "generation_config": {
+    "max_new_tokens": 512,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "top_k": 50,
+    "repetition_penalty": 1.1
+  }
+}
