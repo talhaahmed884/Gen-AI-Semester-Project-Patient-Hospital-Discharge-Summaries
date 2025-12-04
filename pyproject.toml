@@ -1,31 +1,72 @@
 [project]
 name = "gen-ai-semester-project-patient-hospital-discharge-summaries"
 version = "0.1.0"
-description = "Add your description here"
+description = "Clinical Discharge Summarization using MedGemma 4B with QLoRA - Fine-tuning large language models for comprehensive patient discharge summaries"
 readme = "README.md"
 requires-python = ">=3.12"
+keywords = [
+    "medical-nlp",
+    "clinical-summarization",
+    "qlora",
+    "parameter-efficient-fine-tuning",
+    "discharge-summaries",
+    "medgemma",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Programming Language :: Python :: 3.12",
+]
+
 dependencies = [
-    "accelerate>=1.12.0",
-    "bert-score>=0.3.13",
-    "bitsandbytes>=0.48.2",
-    "datasets>=4.4.1",
-    "einops>=0.8.1",
-    "hf-xet>=1.2.0",
-    "ipykernel>=7.1.0",
-    "ipywidgets>=8.1.8",
-    "peft>=0.18.0",
-    "scipy>=1.16.3",
-    "torch>=2.9.1",
-    "transformers>=4.57.3",
-    "trl>=0.25.1",
-    # Data cleaning and preprocessing libraries
-    "kagglehub>=0.3.8",
-    "matplotlib>=3.9.0",
-    "nltk>=3.9.1",
+    # Core Data Science
     "numpy>=1.26.0,<2.0.0", # Pin to 1.x for spacy/scispacy compatibility
     "pandas>=2.2.3",
-    "seaborn>=0.13.2",
-    # Two-stage compression pipeline libraries
-    "scispacy>=0.5.4",
+    # Data Acquisition
+    "kagglehub>=0.3.8",
+    # Natural Language Processing
+    "nltk>=3.9.1",
     "spacy>=3.7.0,<3.8.0",
+    "scispacy>=0.5.4",
+    # Data Visualization
+    "matplotlib>=3.9.0",
+    "seaborn>=0.13.2",
+    # Deep Learning & Transformers
+    "torch>=2.9.1",
+    "transformers>=4.57.3",
+    "peft>=0.18.0",
+    "bitsandbytes>=0.48.2",
+    "trl>=0.25.1",
+    "accelerate>=1.12.0",
+    # ML Datasets & Utilities
+    "datasets>=4.4.1",
+    "huggingface-hub>=0.26.0",
+    # Evaluation Metrics
+    "bert-score>=0.3.13",
+    "scipy>=1.16.3",
+    # Model Architecture Utilities
+    "einops>=0.8.1",
+    # Jupyter Notebook Support
+    "ipykernel>=7.1.0",
+    "ipywidgets>=8.1.8",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "jupyter>=1.0.0",
+    "jupyterlab>=4.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/talhaahmed884/Gen-AI-Semester-Project-Patient-Hospital-Discharge-Summaries"
+Repository = "https://github.com/talhaahmed884/Gen-AI-Semester-Project-Patient-Hospital-Discharge-Summaries"
+Issues = "https://github.com/talhaahmed884/Gen-AI-Semester-Project-Patient-Hospital-Discharge-Summaries/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = []
