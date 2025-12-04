@@ -1,2 +1,3 @@
 .venv/
 mimic_cleaned_text_only.csv
+mimic_cleaned_full.csv
