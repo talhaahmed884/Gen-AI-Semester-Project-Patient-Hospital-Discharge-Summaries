@@ -1,2 +1,2 @@
 .venv/
-*.csv
+mimic_cleaned_text_only.csv
