@@ -18,4 +18,11 @@ dependencies = [
     "torch>=2.9.1",
     "transformers>=4.57.3",
     "trl>=0.25.1",
+    # Data cleaning and preprocessing libraries
+    "kagglehub>=0.3.8",
+    "matplotlib>=3.9.0",
+    "nltk>=3.9.1",
+    "numpy>=2.2.1",
+    "pandas>=2.2.3",
+    "seaborn>=0.13.2",
 ]

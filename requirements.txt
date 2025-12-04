@@ -1,0 +1,28 @@
+# Data Science Libraries
+pandas
+numpy
+
+# Kaggle Integration
+kagglehub
+
+# Natural Language Processing
+nltk
+
+# Data Visualization
+matplotlib
+seaborn
+
+# Deep Learning and Transformers (from clinical notebook)
+transformers
+peft
+bitsandbytes
+trl
+accelerate
+datasets
+bert_score
+scipy
+einops
+torch
+torchvision
+torchaudio
+hf-xet
