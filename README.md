@@ -63,12 +63,26 @@ After data cleaning, run the training notebook:
 - **Local execution**: Run cells starting from Section 3B (Load The Dataset)
 - **Google Colab**: Run Section 2A to mount Drive, then Section 3A (Colab)
 
+#### 3. Two-Stage Compression Pipeline (`two_stage_compression_pipeline.ipynb`)
+
+After fine-tuning, run the compression pipeline:
+
+- **Automatic environment detection**: Detects Colab vs Local automatically
+- **Local execution**: Uses local file paths, saves to `./compression_results/`
+- **Google Colab**:
+    1. Mounts Google Drive automatically
+    2. Update paths in Section 2 to match your Drive structure
+    3. Requires HuggingFace authentication for Llama-3
+
+**Important**: This notebook manages memory aggressively to run two large models sequentially on a single GPU.
+
 ## Project Structure
 
 ```
 .
 ├── data_cleaning.ipynb                           # Data preprocessing pipeline
-├── clinical_discharge_summarization_peft.ipynb  # Main training notebook
+├── clinical_discharge_summarization_peft.ipynb  # Stage 1: MedGemma fine-tuning
+├── two_stage_compression_pipeline.ipynb          # Stage 2: Llama compression pipeline
 ├── pyproject.toml                                # Project dependencies
 ├── uv.lock                                       # Locked dependencies
 └── README.md                                     # This file
@@ -192,6 +206,92 @@ This notebook fine-tunes MedGemma 4B for clinical discharge summarization using 
 **Required Libraries**:
 
 - torch, transformers, peft, bitsandbytes, trl, accelerate, datasets, bert_score, scipy, einops
+
+### 3. Two-Stage Compression Pipeline (`two_stage_compression_pipeline.ipynb`)
+
+This notebook implements a two-stage clinical summarization pipeline with compression:
+
+**Pipeline Architecture**:
+
+```
+Clinical Notes → [Stage 1: MedGemma-4B] → Verbose Summary → [Stage 2: Llama-3-8B] → Compressed Summary
+```
+
+**Stage 1: Verbose Summary Generation**:
+
+1. **Model Loading**:
+    - Loads fine-tuned MedGemma-4B with LoRA adapters
+    - 4-bit quantization (NF4) for memory efficiency
+    - Generates high-recall, detailed summaries
+
+2. **Generation Parameters**:
+    - Max tokens: 512 for comprehensive coverage
+    - Temperature: 0.7 for balanced outputs
+    - Emphasizes medical entity completeness
+
+3. **Critical Memory Management**:
+    - Complete model unloading after generation
+    - `flush_memory()` utility for GPU cache clearing
+    - Ensures no OOM errors on single GPU
+
+**Stage 2: Compression with Entity Retention**:
+
+1. **Model Loading**:
+    - Loads Meta-Llama-3-8B-Instruct in 4-bit
+    - Only loaded after MedGemma is fully unloaded
+
+2. **Chain-of-Density Inspired Compression**:
+    - Prompt: "Rewrite to be 50% shorter while retaining ALL entities"
+    - Preserves: medications (with dosages), vitals (with numbers), lab results, diagnoses, procedures, dates
+    - Temperature: 0.3 for deterministic compression
+
+**Evaluation Metrics** (Research Component):
+
+1. **Compression Ratio**:
+    - Measures: `len(Stage2) / len(Stage1)`
+    - Target: ~50% compression
+    - Reports: mean, median, std dev
+
+2. **Entity Retention (NER)**:
+    - Uses SciSpacy (`en_core_sci_sm`) for medical entity extraction
+    - Calculates recall: `entities_in_stage2 / entities_in_stage1`
+    - Critical metric: Should be >85% for clinical use
+
+3. **Clinical BERTScore**:
+    - Compares compressed summaries vs original notes
+    - Uses `Bio_ClinicalBERT` embeddings
+    - Measures semantic similarity (Precision, Recall, F1)
+
+**Memory Management Architecture**:
+
+- `flush_memory()`: Clears GPU cache using `torch.cuda.empty_cache()` + `gc.collect()`
+- `unload_model()`: Moves model to CPU, deletes references, flushes memory
+- Sequential loading: MedGemma → unload → Llama (prevents OOM)
+
+**Output Files**:
+
+- `compression_pipeline_results.csv`: Full results with all metrics
+- `compression_pipeline_results.json`: Structured results for analysis
+- `summary_statistics.json`: Aggregate metrics and configuration
+
+**Environment Compatibility**:
+
+- **Auto-detection**: Automatically detects Colab vs Local execution
+- **Local Mode**: Uses project directory paths
+- **Colab Mode**:
+    - Automatic Google Drive mounting
+    - Configurable Drive paths for inputs/outputs
+    - HuggingFace authentication for Llama-3
+
+**Analysis Features**:
+
+- Correlation analysis (compression vs entity retention)
+- Best/worst sample identification
+- Sample-by-sample comparison tables
+
+**Required Libraries**:
+
+- torch, transformers, bitsandbytes, accelerate, scispacy, bert_score, pandas, numpy
 
 ## Model Configuration
 

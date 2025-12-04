@@ -25,4 +25,7 @@ dependencies = [
     "numpy>=2.2.1",
     "pandas>=2.2.3",
     "seaborn>=0.13.2",
+    # Two-stage compression pipeline libraries
+    "scispacy>=0.5.4",
+    "spacy>=3.7.0",
 ]
