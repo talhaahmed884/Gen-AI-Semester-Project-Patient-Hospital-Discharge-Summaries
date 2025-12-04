@@ -22,7 +22,10 @@ dependencies = [
     "kagglehub>=0.3.8",
     "matplotlib>=3.9.0",
     "nltk>=3.9.1",
-    "numpy>=2.2.1",
+    "numpy>=1.26.0,<2.0.0", # Pin to 1.x for spacy/scispacy compatibility
     "pandas>=2.2.3",
     "seaborn>=0.13.2",
+    # Two-stage compression pipeline libraries
+    "scispacy>=0.5.4",
+    "spacy>=3.7.0,<3.8.0",
 ]
